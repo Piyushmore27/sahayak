@@ -120,11 +120,9 @@ export default function AdminLoginPage() {
         </div>
 
         <div style={{ marginTop:24, textAlign:'center', fontSize:12, color:'var(--gray-400)' }}>
+          <Link to="/" style={{ color:'var(--teal-700)' }}>← Back to Selection</Link>
+          {' · '}
           <Link to="/volunteer/login" style={{ color:'var(--teal-700)' }}>Volunteer Login</Link>
-          {' · '}
-          <a href="#" style={{ color:'var(--gray-400)' }}>Security Protocol</a>
-          {' · '}
-          <a href="#" style={{ color:'var(--gray-400)' }}>Support</a>
         </div>
         <div style={{ marginTop:20, fontSize:11, color:'var(--gray-400)', textAlign:'center' }}>
           © 2024 SAHAYAK SENTINEL. AUTHORIZED PERSONNEL ONLY.

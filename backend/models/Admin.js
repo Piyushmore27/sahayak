@@ -1,37 +1,61 @@
-const mongoose = require('mongoose');
+const FileDB = require('../db/FileDB');
 const bcrypt = require('bcryptjs');
 
-const adminSchema = new mongoose.Schema({
-  adminId: {
-    type: String,
-    unique: true,
-    default: () => 'ADM-' + Math.floor(10000 + Math.random() * 90000),
-  },
-  name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password: { type: String, required: true, minlength: 6 },
-  sector: { type: String, default: 'Delhi Sector Alpha' },
-  sentinelLevel: { type: Number, default: 1, min: 1, max: 10 },
-  avatar: { type: String, default: '' },
-  refreshTokens: [{ type: String }],
-  isActive: { type: Boolean, default: true },
-}, { timestamps: true });
+const db = new FileDB('admins');
 
-adminSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
+class AdminModel {
+  static createQuery(data) {
+    if (!data) return {
+      select: function() { return this; },
+      then: (resolve) => resolve(null)
+    };
 
-adminSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
-};
+    const doc = {
+      ...data,
+      comparePassword: async function(candidatePassword) {
+        if (!this.password) return false;
+        return bcrypt.compare(candidatePassword, this.password);
+      },
+      save: async function() {
+        const { comparePassword, save, select, then, ...dataToSave } = this;
+        db.updateById(this._id || data._id, dataToSave);
+        return this;
+      }
+    };
 
-adminSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  delete obj.refreshTokens;
-  return obj;
-};
+    const query = {
+      ...doc,
+      select: function() { return this; },
+      then: (resolve) => resolve(doc)
+    };
+    
+    return query;
+  }
 
-module.exports = mongoose.model('Admin', adminSchema);
+  static findOne(query) {
+    const admin = db.findOne(query);
+    return this.createQuery(admin);
+  }
+
+  static findById(id) {
+    const admin = db.findById(id);
+    return this.createQuery(admin);
+  }
+
+  static async create(data) {
+    const hashedPassword = await bcrypt.hash(data.password, 12);
+    const newAdmin = {
+      ...data,
+      password: hashedPassword,
+      adminId: data.adminId || 'ADM-' + Math.floor(10000 + Math.random() * 90000),
+      sector: data.sector || 'Delhi Sector Alpha',
+      sentinelLevel: 1,
+      isActive: true,
+      refreshTokens: []
+    };
+    const created = db.create(newAdmin);
+    return this.createQuery(created);
+  }
+}
+
+module.exports = AdminModel;

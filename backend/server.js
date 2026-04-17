@@ -4,12 +4,12 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const connectDB = require('./config/db');
+// const connectDB = require('./config/db');
 
 const app = express();
 
-// Connect to MongoDB Atlas
-connectDB();
+// Connect to MongoDB Atlas (DISABLED - Using FileDB)
+// connectDB();
 
 // Security middleware
 app.use(helmet());

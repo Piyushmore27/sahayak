@@ -102,10 +102,52 @@ export default function SignupPage() {
 
             <div style={{ marginBottom:16 }}>
               <label style={labelStyle}>Profile Photo</label>
-              <div style={{ border:'2px dashed var(--gray-200)', borderRadius:10, padding:'28px', textAlign:'center', color:'var(--gray-400)', fontSize:13 }}>
-                <div style={{ fontSize:24, marginBottom:8 }}>☁️</div>
-                Click to upload or drag and drop<br />
-                <span style={{ fontSize:11 }}>PNG, JPG (max. 5MB)</span>
+              <div 
+                onClick={() => document.getElementById('photoInput').click()}
+                style={{ 
+                  border:'2px dashed var(--gray-200)', 
+                  borderRadius:10, 
+                  padding: form.avatar ? '10px' : '28px', 
+                  textAlign:'center', 
+                  color:'var(--gray-400)', 
+                  fontSize:13,
+                  cursor: 'pointer',
+                  position: 'relative',
+                  background: 'var(--gray-50)',
+                  transition: 'all 0.2s',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--teal-400)'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--gray-200)'}
+              >
+                {form.avatar ? (
+                  <img src={form.avatar} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%', marginBottom: 8 }} />
+                ) : (
+                  <div style={{ fontSize:24, marginBottom:8 }}>☁️</div>
+                )}
+                {form.avatar ? 'Click to change photo' : 'Click to browse or drag and drop'}
+                <input 
+                  id="photoInput"
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: 'none' }} 
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setForm(f => ({ ...f, avatar: reader.result }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                <br />
+                {!form.avatar && <span style={{ fontSize:11 }}>PNG, JPG (max. 5MB)</span>}
               </div>
             </div>
 

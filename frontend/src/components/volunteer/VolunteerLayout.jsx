@@ -29,7 +29,10 @@ export default function VolunteerLayout({ children, activeTab }) {
         <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--gray-50)' }}>
           <div style={{ display:'flex', gap:6 }}>
             {['Map','Volunteers','Resources'].map(t => (
-              <button key={t} style={{ padding:'5px 10px', borderRadius:6, fontSize:12, border:'none', cursor:'pointer', background: activeTab===t?'transparent':'transparent', color: activeTab===t?'var(--teal-700)':'var(--gray-400)', fontWeight: activeTab===t?600:400, borderBottom: activeTab===t?'2px solid var(--teal-700)':'2px solid transparent' }}>
+              <button 
+                key={t} 
+                onClick={() => navigate(t === 'Map' ? '/volunteer/home' : `/volunteer/${t.toLowerCase()}`)}
+                style={{ padding:'5px 10px', borderRadius:6, fontSize:12, border:'none', cursor:'pointer', background: activeTab===t?'transparent':'transparent', color: activeTab===t?'var(--teal-700)':'var(--gray-400)', fontWeight: activeTab===t?600:400, borderBottom: activeTab===t?'2px solid var(--teal-700)':'2px solid transparent' }}>
                 {t}
               </button>
             ))}
