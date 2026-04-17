@@ -1,69 +1,97 @@
-const mongoose = require('mongoose');
+const FileDB = require('../db/FileDB');
 const bcrypt = require('bcryptjs');
 
-const volunteerSchema = new mongoose.Schema({
-  volunteerId: {
-    type: String,
-    unique: true,
-    default: () => 'VOL-' + Math.floor(10000 + Math.random() * 90000),
-  },
-  fullName: { type: String, required: true, trim: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  phone: { type: String, required: true },
-  password: { type: String, required: true, minlength: 6 },
-  occupation: {
-    type: String,
-    enum: ['Doctor', 'Nurse', 'Paramedic', 'Firefighter', 'Police', 'Rescue Diver', 'Logistics', 'Field Coordinator', 'Community Anchor', 'Other'],
-    required: true,
-  },
-  aadharNumber: { type: String },
-  address: { type: String },
-  avatar: { type: String, default: '' },
-  district: { type: String, default: '' },
-  sector: { type: String, default: '' },
-  emergencyRole: {
-    type: String,
-    enum: ['Medical Lead', 'Logistics', 'Communications', 'Support', 'Coordinator', 'Field Agent'],
-    default: 'Field Agent',
-  },
-  rating: { type: Number, default: 0, min: 0, max: 5 },
-  appreciationPoints: { type: Number, default: 0 },
-  missionsCompleted: { type: Number, default: 0 },
-  badge: {
-    type: String,
-    enum: ['', 'Lifesaver Elite', 'Rapid Responder', 'First Contact', 'Crisis Expert', 'Community Anchor', 'Lifesaver'],
-    default: '',
-  },
-  isOnline: { type: Boolean, default: false },
-  isVerified: { type: Boolean, default: false },
-  isApproved: { type: Boolean, default: false },
-  status: { type: String, enum: ['pending', 'active', 'suspended'], default: 'pending' },
-  refreshTokens: [{ type: String }],
-  location: {
-    type: { type: String, enum: ['Point'], default: 'Point' },
-    coordinates: { type: [Number], default: [0, 0] },
-  },
-  skills: [{ type: String }],
-}, { timestamps: true });
+const db = new FileDB('volunteers');
 
-volunteerSchema.index({ location: '2dsphere' });
+class VolunteerModel {
+  static createQuery(data) {
+    if (!data) return {
+      select: function() { return this; },
+      then: (resolve) => resolve(null)
+    };
 
-volunteerSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
+    const doc = {
+      ...data,
+      comparePassword: async function(candidatePassword) {
+        if (!this.password) return false;
+        return bcrypt.compare(candidatePassword, this.password);
+      },
+      save: async function() {
+        const { comparePassword, save, select, then, ...dataToSave } = this;
+        db.updateById(this._id || data._id, dataToSave);
+        return this;
+      }
+    };
 
-volunteerSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
-};
+    const query = {
+      ...doc,
+      select: function() { return this; },
+      then: (resolve) => resolve(doc)
+    };
+    
+    return query;
+  }
 
-volunteerSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  delete obj.refreshTokens;
-  delete obj.aadharNumber;
-  return obj;
-};
+  static findOne(query) {
+    // Controller sends { $or: [{ email: val }, { phone: val }] } sometimes
+    // But our FileDB doesn't support $or. Let's add basic support here if needed.
+    let volunteer;
+    if (query.$or) {
+      const all = db.findAll();
+      volunteer = all.find(item => {
+        return query.$or.some(q => {
+          return Object.keys(q).every(key => item[key] === q[key]);
+        });
+      });
+    } else {
+      volunteer = db.findOne(query);
+    }
+    return this.createQuery(volunteer);
+  }
 
-module.exports = mongoose.model('Volunteer', volunteerSchema);
+  static findById(id) {
+    const volunteer = db.findById(id);
+    return this.createQuery(volunteer);
+  }
+
+  static find(query = {}) {
+    const all = db.findAll();
+    let results = all.filter(item => {
+      for (let key in query) {
+        if (item[key] !== query[key]) return false;
+      }
+      return true;
+    });
+    
+    const wrapper = {
+      results,
+      sort: function() { return this; },
+      select: function() { return this; },
+      then: (resolve) => resolve(results)
+    };
+    return wrapper;
+  }
+
+  static async create(data) {
+    const hashedPassword = await bcrypt.hash(data.password, 12);
+    const newVolunteer = {
+      ...data,
+      password: hashedPassword,
+      volunteerId: data.volunteerId || 'VOL-' + Math.floor(10000 + Math.random() * 90000),
+      rating: 0,
+      appreciationPoints: 0,
+      missionsCompleted: 0,
+      isOnline: false,
+      isVerified: false,
+      isApproved: false,
+      status: 'pending',
+      refreshTokens: [],
+      location: { type: 'Point', coordinates: [0, 0] },
+      skills: data.skills || []
+    };
+    const created = db.create(newVolunteer);
+    return this.createQuery(created);
+  }
+}
+
+module.exports = VolunteerModel;

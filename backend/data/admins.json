@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "admin_1",
+    "name": "Sahayak Admin",
+    "email": "admin@sahayak.org",
+    "password": "$2a$12$IBJvoi22D2jOd9jK0CKw6.fspH9cGDFRSaV47X23mad9V5a8271ni",
+    "adminId": "ADM-12345",
+    "sector": "Delhi Sector Alpha",
+    "sentinelLevel": 10,
+    "isActive": true,
+    "refreshTokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluXzEiLCJpYXQiOjE3NzYzNDc3MjEsImV4cCI6MTc3Njk1MjUyMX0.YfAuedKrzbIYoNXzblXeTAsMW0tWlnspFAZqRsrIuRA"
+    ],
+    "createdAt": "2026-04-16T12:56:53.457Z",
+    "updatedAt": "2026-04-17T12:04:40.943Z"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "vol_1",
+    "fullName": "Sahayak Volunteer",
+    "email": "volunteer@sahayak.org",
+    "phone": "9876543210",
+    "password": "$2a$12$ps.4TpYF3v7rauX59xpA5ufYyXdlursoMeUKSUlw/ZJMiT4Uy6eWu",
+    "volunteerId": "VOL-54321",
+    "occupation": "Other",
+    "emergencyRole": "Field Agent",
+    "status": "active",
+    "isApproved": true,
+    "isVerified": true,
+    "refreshTokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InZvbF8xIiwiaWF0IjoxNzc2NDI2MDE5LCJleHAiOjE3NzcwMzA4MTl9.DiObF09-tz1botm-rYZouSW4i-_kcuBwCKqFL3eXOG4"
+    ],
+    "createdAt": "2026-04-16T12:56:53.464Z",
+    "updatedAt": "2026-04-17T11:53:50.210Z",
+    "isOnline": false
+  },
+  {
+    "fullName": "john",
+    "email": "john@sentinel.org",
+    "phone": "9999999999",
+    "password": "$2a$12$yZ4rTIwowYUsaWEQcgCEH.3vmrupED5YVklj/SDxztGaumZhnGG..",
+    "occupation": "Firefighter",
+    "aadharNumber": "999999999999",
+    "address": "indore",
+    "volunteerId": "VOL-94019",
+    "rating": 0,
+    "appreciationPoints": 0,
+    "missionsCompleted": 0,
+    "isOnline": false,
+    "isVerified": false,
+    "isApproved": false,
+    "status": "pending",
+    "refreshTokens": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        0,
+        0
+      ]
+    },
+    "skills": [],
+    "_id": "17763465110158w5hwxzsp",
+    "createdAt": "2026-04-16T13:35:11.015Z",
+    "updatedAt": "2026-04-16T13:35:11.015Z"
+  }
+]

@@ -29,19 +29,37 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, adminId, password } = req.body;
+    console.log(`Login attempt for: ${email || adminId}`);
+    
     const query = email ? { email } : { adminId };
     const admin = await Admin.findOne(query).select('+password +refreshTokens');
-    if (!admin || !(await admin.comparePassword(password))) {
+    
+    if (!admin) {
+      console.log('Admin not found in database');
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
-    if (!admin.isActive) return res.status(403).json({ success: false, message: 'Account deactivated' });
+
+    const isMatch = await admin.comparePassword(password);
+    console.log(`Password match: ${isMatch}`);
+
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+    
+    if (!admin.isActive) {
+      console.log('Admin account is inactive');
+      return res.status(403).json({ success: false, message: 'Account deactivated' });
+    }
 
     const { accessToken, refreshToken } = generateTokens(admin._id);
+    admin.refreshTokens = admin.refreshTokens || [];
     admin.refreshTokens.push(refreshToken);
     await admin.save();
 
+    console.log('Login successful');
     res.json({ success: true, data: { admin, accessToken, refreshToken } });
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 };

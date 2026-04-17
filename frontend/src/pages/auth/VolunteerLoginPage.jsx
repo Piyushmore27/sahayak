@@ -114,8 +114,10 @@ export default function VolunteerLoginPage() {
             New here?{' '}
             <Link to="/volunteer/signup" style={{ color:'var(--teal-700)', fontWeight:600 }}>Join the community</Link>
           </p>
-          <p style={{ textAlign:'center', marginTop:8, fontSize:12, color:'var(--gray-400)' }}>
-            <Link to="/admin/login" style={{ color:'var(--gray-400)' }}>Admin login</Link>
+          <p style={{ textAlign:'center', marginTop:12, fontSize:12, color:'var(--gray-400)' }}>
+            <Link to="/" style={{ color:'var(--teal-700)' }}>← Back to Selection</Link>
+            {' · '}
+            <Link to="/admin/login" style={{ color:'var(--gray-500)' }}>Admin Portal</Link>
           </p>
         </div>
       </div>

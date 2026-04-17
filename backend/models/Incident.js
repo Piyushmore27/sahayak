@@ -1,40 +1,79 @@
-const mongoose = require('mongoose');
+const FileDB = require('../db/FileDB');
 
-const incidentSchema = new mongoose.Schema({
-  incidentId: {
-    type: String,
-    unique: true,
-    default: () => 'INC-' + Date.now(),
-  },
-  title: { type: String, required: true },
-  type: {
-    type: String,
-    enum: ['Traffic Accident', 'Wildfire Alert', 'Urban Infrastructure', 'Medical Emergency', 'Natural Disaster', 'Security Threat', 'Other'],
-    required: true,
-  },
-  priority: {
-    type: String,
-    enum: ['Low', 'Monitor', 'High Priority', 'Urgent', 'Critical'],
-    default: 'Monitor',
-  },
-  status: {
-    type: String,
-    enum: ['active', 'resolved', 'escalated', 'pending'],
-    default: 'active',
-  },
-  description: { type: String },
-  location: {
-    address: { type: String },
-    coordinates: {
-      type: { type: String, enum: ['Point'], default: 'Point' },
-      coordinates: { type: [Number], default: [0, 0] },
-    },
-  },
-  assignedVolunteers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Volunteer' }],
-  respondersCount: { type: Number, default: 0 },
-  image: { type: String, default: '' },
-  reportedBy: { type: String, default: 'System' },
-  resolvedAt: { type: Date },
-}, { timestamps: true });
+const db = new FileDB('incidents');
 
-module.exports = mongoose.model('Incident', incidentSchema);
+class IncidentModel {
+  static createQuery(data) {
+    if (!data) return {
+      then: (resolve) => resolve(null)
+    };
+
+    const doc = {
+      ...data,
+      save: async function() {
+        const { save, then, ...dataToSave } = this;
+        db.updateById(this._id || data._id, dataToSave);
+        return this;
+      }
+    };
+
+    const query = {
+      ...doc,
+      then: (resolve) => resolve(doc)
+    };
+    
+    return query;
+  }
+
+  static find(query = {}) {
+    const all = db.findAll();
+    const results = all.filter(item => {
+      for (let key in query) {
+        if (item[key] !== query[key]) return false;
+      }
+      return true;
+    });
+    
+    const wrapper = {
+      results,
+      sort: function() { return this; },
+      select: function() { return this; },
+      then: (resolve) => resolve(results)
+    };
+    return wrapper;
+  }
+
+  static findById(id) {
+    const incident = db.findById(id);
+    return this.createQuery(incident);
+  }
+
+  static async create(data) {
+    const newIncident = {
+      ...data,
+      incidentId: 'INC-' + Date.now(),
+      status: data.status || 'active',
+      priority: data.priority || 'Monitor',
+      respondersCount: 0,
+      assignedVolunteers: data.assignedVolunteers || [],
+      reportedBy: data.reportedBy || 'System'
+    };
+    const created = db.create(newIncident);
+    return this.createQuery(created);
+  }
+
+  static findByIdAndDelete(id) {
+    const deleted = db.deleteById(id);
+    const wrapper = {
+      then: (resolve) => resolve(deleted)
+    };
+    return wrapper;
+  }
+
+  static findByIdAndUpdate(id, updates) {
+    const updated = db.updateById(id, updates);
+    return this.createQuery(updated);
+  }
+}
+
+module.exports = IncidentModel;

@@ -6,6 +6,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import AdminLoginPage from './pages/auth/AdminLoginPage';
 import VolunteerLoginPage from './pages/auth/VolunteerLoginPage';
 import SignupPage from './pages/auth/SignupPage';
+import EntryPage from './pages/auth/EntryPage';
+import AdminRegisterPage from './pages/auth/AdminRegisterPage';
 
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -13,10 +15,15 @@ import AdminVolunteers from './pages/admin/AdminVolunteers';
 import AdminRankings from './pages/admin/AdminRankings';
 import AdminRoleDirectories from './pages/admin/AdminRoleDirectories';
 import AdminNewAccounts from './pages/admin/AdminNewAccounts';
+import AddVolunteerPage from './pages/admin/AddVolunteerPage';
+import AdminSettings from './pages/admin/AdminSettings';
+import SupportPage from './pages/admin/SupportPage';
 
 // Volunteer pages
 import VolunteerHome from './pages/volunteer/VolunteerHome';
 import VolunteerSettings from './pages/volunteer/VolunteerSettings';
+import VolunteerVolunteers from './pages/volunteer/VolunteerVolunteers';
+import VolunteerResources from './pages/volunteer/VolunteerResources';
 
 import LoadingSpinner from './components/shared/LoadingSpinner';
 
@@ -33,7 +40,7 @@ const RootRedirect = () => {
   if (loading) return <LoadingSpinner fullScreen />;
   if (user && role === 'admin') return <Navigate to="/admin/dashboard" replace />;
   if (user && role === 'volunteer') return <Navigate to="/volunteer/home" replace />;
-  return <AdminLoginPage />;
+  return <EntryPage />;
 };
 
 export default function App() {
@@ -46,18 +53,24 @@ export default function App() {
 
           {/* Auth */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin/register" element={<AdminRegisterPage />} />
           <Route path="/volunteer/login" element={<VolunteerLoginPage />} />
           <Route path="/volunteer/signup" element={<SignupPage />} />
 
           {/* Admin */}
           <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/volunteers" element={<ProtectedRoute requiredRole="admin"><AdminVolunteers /></ProtectedRoute>} />
+          <Route path="/admin/volunteers/add" element={<ProtectedRoute requiredRole="admin"><AddVolunteerPage /></ProtectedRoute>} />
           <Route path="/admin/rankings" element={<ProtectedRoute requiredRole="admin"><AdminRankings /></ProtectedRoute>} />
           <Route path="/admin/role-directories" element={<ProtectedRoute requiredRole="admin"><AdminRoleDirectories /></ProtectedRoute>} />
           <Route path="/admin/new-accounts" element={<ProtectedRoute requiredRole="admin"><AdminNewAccounts /></ProtectedRoute>} />
+          <Route path="/admin/settings" element={<ProtectedRoute requiredRole="admin"><AdminSettings /></ProtectedRoute>} />
+          <Route path="/admin/support" element={<ProtectedRoute requiredRole="admin"><SupportPage /></ProtectedRoute>} />
 
           {/* Volunteer */}
           <Route path="/volunteer/home" element={<ProtectedRoute requiredRole="volunteer"><VolunteerHome /></ProtectedRoute>} />
+          <Route path="/volunteer/volunteers" element={<ProtectedRoute requiredRole="volunteer"><VolunteerVolunteers /></ProtectedRoute>} />
+          <Route path="/volunteer/resources" element={<ProtectedRoute requiredRole="volunteer"><VolunteerResources /></ProtectedRoute>} />
           <Route path="/volunteer/settings" element={<ProtectedRoute requiredRole="volunteer"><VolunteerSettings /></ProtectedRoute>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
