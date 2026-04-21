@@ -37,7 +37,9 @@ export default function AdminNewAccounts() {
       if (action === 'approve') await approveVolunteer(id);
       else await rejectVolunteer(id);
       setPending(p => p.filter(v => v._id !== id));
-    } catch {}
+    } catch (err){
+      console.log(err);
+    }
     setProcessing(p => { const n={...p}; delete n[id]; return n; });
   };
 

@@ -4,12 +4,12 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-// const connectDB = require('./config/db');
+const connectDB = require('./config/db');
 
 const app = express();
 
 // Connect to MongoDB Atlas (DISABLED - Using FileDB)
-// connectDB();
+connectDB();
 
 // Security middleware
 app.use(helmet());
@@ -25,6 +25,7 @@ app.use('/api', limiter);
 app.use('/api/*/auth/login', authLimiter);
 app.use('/api/*/auth/register', authLimiter);
 
+app.set('trust proxy', 1);
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));

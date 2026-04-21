@@ -27,6 +27,7 @@ exports.register = async (req, res) => {
 
 // POST /api/admin/auth/login
 exports.login = async (req, res) => {
+  console.log(req.body);
   try {
     const { email, adminId, password } = req.body;
     console.log(`Login attempt for: ${email || adminId}`);

@@ -13,5 +13,29 @@
     ],
     "createdAt": "2026-04-16T12:56:53.457Z",
     "updatedAt": "2026-04-17T12:04:40.943Z"
+  },
+  {
+    "name": "Vansh Katara",
+    "email": "vansh@gmail.com",
+    "password": "$2a$12$gVlaAC6HIMMkHvHctB//a.kde6e.6Vbt03Zxb13zBuoMb7ZDYPU0e",
+    "sector": "Indore",
+    "adminId": "ADM-35159",
+    "sentinelLevel": 1,
+    "isActive": true,
+    "refreshTokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1NzM3MzcsImV4cCI6MTc3NzE3ODUzN30.7uvqQrSoNIEBsqlLP6UVv7cd9U-phH9otXMg-f7helE",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1NzM5MTksImV4cCI6MTc3NzE3ODcxOX0.m3zSIzDdVwpkYMKXWqrSPBvCXaTPe10I50DpIDNgeBQ",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1NzY1NjQsImV4cCI6MTc3NzE4MTM2NH0.04OBCZSH4NL6UtLp2meSNYB9T9UugbTi69fw91UYGZM",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1NzY5MDgsImV4cCI6MTc3NzE4MTcwOH0.VBMNXSyGNpLl0iB6cDzcxdP8ltUzIXZQDwzh5K-qh7k",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1OTI3MDEsImV4cCI6MTc3NzE5NzUwMX0.DbfEC4mMyso_6JBbnKywr7zIC_Dx0xGH9fzzxkW9wNA",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1OTU5MDIsImV4cCI6MTc3NzIwMDcwMn0.Q8zN_YMrlGRjlluq8t7v3n8gmWn_hzn_0BSsSUAM2cY",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1OTc1MDYsImV4cCI6MTc3NzIwMjMwNn0.XwqAvoTQjvWOFsomgiBsl3PdtP-nFq5ZTB606y1oJag",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1OTg2NTAsImV4cCI6MTc3NzIwMzQ1MH0.Da4fxWREnbwhKqX3Az8bkBdf1yfgZxRGt-exD3LAZg0",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY1OTg2NjUsImV4cCI6MTc3NzIwMzQ2NX0._ZcAM9_ktrdR9MWChBwSfeXqcVoFIYZxo7y9d5hsX-o",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3NzY1NzM3Mzc5Nzg4b25ocnJvanAiLCJpYXQiOjE3NzY2MDM0MjgsImV4cCI6MTc3NzIwODIyOH0.tYyQCbdpU5MGho3JIAAa_hp56poAb2FeDBjK-Ejyciw"
+    ],
+    "_id": "17765737379788onhrrojp",
+    "createdAt": "2026-04-19T04:42:17.978Z",
+    "updatedAt": "2026-04-19T12:57:08.391Z"
   }
 ]
